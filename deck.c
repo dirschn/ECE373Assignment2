@@ -122,5 +122,5 @@ int initializeDeck(){
 
 int moveCards(int numbers[]){
     struct card temp;
-    
+
 }

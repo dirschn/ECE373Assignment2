@@ -15,7 +15,7 @@ struct deck {
   int top_card;
 };
 
-int deck_length=sizeof(list)/sizeof(list[0]);
+//int deck_length=sizeof(list)/sizeof(list[0]);
 /* 
  * Variable: deck_instance
  * -----------------------
