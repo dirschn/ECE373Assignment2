@@ -79,16 +79,28 @@ void print_book(struct player* target) {
 char check_add_book(struct player* target){
 
   struct player* temp;
+  struct card* book;
   temp=target;
   for(int i=0;i<13;i++){
 
     int count = search(target,*(cardArray+i));
     if(count == 4){
-      for(int j = 0;j<4;j++){
-	remove_card(target,*(cardArray+i));
+
+      if(cardArray[i]=='1'){
+	book->rank[0]='1';
+	book->rank[1]='0';
       }
-      target->book[target->book_size]=cardArray[i];
+      else
+      book->rank[0]=cardArray[i];
+
+
+      for(int j = 0;j<4;j++){
+	remove_card(target,book);
+      }
+      
+      target->book[target->book_size]=*book->rank;
       target->book_size++;
+
       if(cardArray[i]=='1')
 	return card10;
       else
@@ -123,12 +135,19 @@ int transfer_cards(struct player* src, struct player* dest, char rank){
   struct player* from;
   from = src;
   int count = 0;
+  struct card* card;
+  if(rank=='1'){
+	card->rank[0]='1';
+	card->rank[1]='0';
+      }
+      else
+      card->rank[0]=rank;
 
   while(from->card_list != NULL){
     if(from->card_list == NULL)
       return -1;
     if(from->card_list->top.rank[0] = rank){
-      add_card(dest,rank);
+      add_card(dest,card);
       count++;
     }
     from->card_list->top = from->card_list->next->top;
