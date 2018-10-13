@@ -12,11 +12,11 @@ int add_card(struct player* target, struct card* new_card){
    if (temp == NULL) { return -1; }
 
    /* Initialize new element */
-   temp.card_list.top = new_card;
-   temp.card_list.next = target.card_list.top;
+   temp->card_list->top = new_card;
+   temp->card_list->next = target->card_list->top;
    
    /* Set list to temp, the new front of list*/
-   target.card_list = temp.card_list;
+   target->card_list = temp->card_list;
    target->card_list->size++;
    return 0;
 }
