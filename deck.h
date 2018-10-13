@@ -14,7 +14,8 @@ struct deck {
   struct card list[52];
   int top_card;
 };
-//int deck_length=sizeof(list)/sizeof(struct card);
+
+int deck_length=sizeof(list)/sizeof(list[0]);
 /* 
  * Variable: deck_instance
  * -----------------------
@@ -64,4 +65,14 @@ struct card* next_card( );
  */
 size_t deck_size( );
 
+/* 
+ * Function: initializeDeck
+ * ------------------------
+ *  Initialize the deck to keep the function shuffle() manageable
+ *
+ *  returns: 0 if no error, and non-zero on error
+ */
+int initializeDeck();
+
+int shuffleRand();
 #endif
