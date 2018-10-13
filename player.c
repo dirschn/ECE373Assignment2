@@ -5,8 +5,6 @@
 #include <time.h>
 #include <string.h>
 
-int main(void){return 0;}
-
 char cardArray[13] = {'2','3','4','5','6','7','8','9','1','J','Q','K','A'};
 char card10[2] = {'1','0'};
 
@@ -35,7 +33,7 @@ int remove_card(struct player* target, struct card* old_card){
 
   if (iterator == NULL) { return -1; } /* Return false; list is empty */
    
-   while (iterator->top.rank != old_card->rank) { /* Check if we found the item */
+   while (iterator->top.rank != *old_card->rank) { /* Check if we found the item */
      
      previous = iterator;               /* Store pointer to previous item */
      iterator = iterator->next;        /* Look at next item in list */
@@ -81,28 +79,19 @@ void print_book(struct player* target) {
 char check_add_book(struct player* target){
 
   struct player* temp;
-  struct card* book;
   temp=target;
   for(int i=0;i<13;i++){
 
     int count = search(target,*(cardArray+i));
     if(count == 4){
-
-      if(cardArray[i]=='1'){
-	book->rank[0]='1';
-	book->rank[1]='0';
-      }
-      else
-      book->rank[0]=cardArray[i];
-
-
       for(int j = 0;j<4;j++){
-	remove_card(target,book);
+	remove_card(target,*(cardArray+i));
       }
-      
-      target->book[target->book_size]=*book->rank;
+      target->book[target->book_size]=cardArray[i];
       target->book_size++;
-
+      if(cardArray[i]=='1')
+	return card10;
+      else
 	return cardArray[i];
     }
 
@@ -134,19 +123,12 @@ int transfer_cards(struct player* src, struct player* dest, char rank){
   struct player* from;
   from = src;
   int count = 0;
-  struct card* card;
-  if(rank=='1'){
-	card->rank[0]='1';
-	card->rank[1]='0';
-      }
-      else
-      card->rank[0]=rank;
 
   while(from->card_list != NULL){
     if(from->card_list == NULL)
       return -1;
     if(from->card_list->top.rank[0] = rank){
-      add_card(dest,card);
+      add_card(dest,rank);
       count++;
     }
     from->card_list->top = from->card_list->next->top;
@@ -198,7 +180,8 @@ char user_play(struct player* target){
     printf("Player 1's turn, enter a Rank:");
     c = getchar();
   }
-   
+  printf("Go Fish, Player %d draws %s%c\n", target->player_number, deck_instance.list[deck_instance.top_card].rank, deck_instance.list[deck_instance.top_card].suit);
+   add_card(target, next_card());
   return c;
 
 }
