@@ -3,15 +3,10 @@
 #include <stdio.h>
 #include "deck.h"
 #include <time.h>
+#include <string.h>
 
-
-int main(){
-
-
-  
-}
-
-char cardArray[13] = {'2','3','4','5','6','7','8','9','0','J','Q','K','A'};
+char cardArray[13] = {'2','3','4','5','6','7','8','9','1','J','Q','K','A'};
+char card10[2] = {'1','0'};
 
 int add_card(struct player* target, struct card* new_card){
 
@@ -61,23 +56,24 @@ int remove_card(struct player* target, struct card* old_card){
 }
 
 void print_card_list(struct player* target) {
-     struct player* temp;
-     int a = temp->player_number;
-     temp = target;
-     while (temp != NULL) {
-       printf("Player %d's Card_List -  %c%c", a, temp->card_list->top.rank,temp->card_list->top.suit);
-       temp = temp->card_list->next;
+     int a = target->player_number;
+     printf("Player %d's Hand - ",a);
+     for(int i =0; i<target->hand_size;i++) {
+       printf("%s%c ",target->card_list->top.rank,target->card_list->top.suit);
+       target->card_list = target->card_list->next;
      }
-
+     printf("/n");
 }
 
 void print_book(struct player* target) {
   struct player* temp;
   temp = target;
   int a=temp->player_number;
+  printf("Player %d's Book - ",a);
   for(int i=0;i<target->book_size;i++){
-    printf("Player %d's Book - %c", a, temp->book[i]);
+    printf("%c ",temp->book[i]);
   }
+  printf("/n");
 }
 
 char check_add_book(struct player* target){
@@ -86,16 +82,21 @@ char check_add_book(struct player* target){
   temp=target;
   for(int i=0;i<13;i++){
 
-    int count = search(target,cardArray[i]);
+    int count = search(target,*(cardArray+i));
     if(count == 4){
       for(int j = 0;j<4;j++){
-	remove_card(target,cardArray[i]);
+	remove_card(target,*(cardArray+i));
       }
       target->book[target->book_size]=cardArray[i];
       target->book_size++;
+      if(cardArray[i]=='1')
+	return card10;
+      else
+	return cardArray[i];
     }
 
-  }  
+  }
+  return 0;
   
 }
 
@@ -138,7 +139,7 @@ int transfer_cards(struct player* src, struct player* dest, char rank){
 
 int game_over(struct player* target){
 
-  if(target->book[7] != NULL)
+  if(target->book[6] != (0 || NULL))
     return 1;
   else
     return 0;
@@ -147,10 +148,9 @@ int game_over(struct player* target){
 
 int reset_player(struct player* target){
 
-  memset(&target->book[0],0,sizeof(target->book));
-
   free(target->card_list);
-
+  memset(&target->book,0,sizeof(target->book));
+  
 }
 
 char computer_play(struct player* target){
