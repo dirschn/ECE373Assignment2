@@ -17,22 +17,22 @@ int add_card(struct player* target, struct card* new_card){
    
    /* Set list to temp, the new front of list*/
    target.card_list = temp.card_list;
-   target.card_list.size++;
+   target->card_list->size++;
    return 0;
 }
 
 int remove_card(struct player* target, struct card* old_card){
 
-  struct player* iterator = target.card_list;
+  struct player* iterator = target->card_list;
   struct player* previous = NULL; 
  
 
    if (iterator == NULL) { return -1; } /* Return false; list is empty */
    
-   while (iterator.top != old_card) { /* Check if we found the item */
+   while (iterator->top != old_card) { /* Check if we found the item */
      
      previous = iterator;               /* Store pointer to previous item */
-     iterator = iterator.next;        /* Look at next item in list */
+     iterator = iterator->next;        /* Look at next item in list */
      
      if (iterator == NULL)             /* Check if end of list */
         return -1;                       /* Return false; didnâ€™t find item */
@@ -40,9 +40,9 @@ int remove_card(struct player* target, struct card* old_card){
     
     /* Found item; break out of loop */
     if (previous != NULL) 
-       previous.next = iterator.next;	/* Remove item from list*/
+       previous->next = iterator->next;	/* Remove item from list*/
     else {  
-       target.card_list = iterator.next;         /* Set new front of list */
+       target->card_list = iterator->next;         /* Set new front of list */
        
     }
     /* Free memory of item we are removing */
@@ -53,11 +53,11 @@ int remove_card(struct player* target, struct card* old_card){
 
 void print_card_list(struct player* target) {
      struct player* temp;
-     int a = temp.player_number;
+     int a = temp->player_number;
      temp = target;
      while (temp != NULL) {
-       printf("Player %d's Card_List -  %d", a, temp.card_list.top);
-       temp = temp.card_list.next;
+       printf("Player %d's Card_List -  %d", a, temp->card_list->top);
+       temp = temp->card_list->next;
      }
 
 }
@@ -65,9 +65,9 @@ void print_card_list(struct player* target) {
 void print_book(struct player* target) {
   struct player* temp;
   temp = target;
-  int a=temp.player_number;
+  int a=temp->player_number;
   for(int i=0;i<book_size;i++){
-    printf("Player %d's Book - %d", a, temp.book[i]);
+    printf("Player %d's Book - %d", a, temp->book[i]);
   }
 }
 
@@ -82,8 +82,8 @@ char check_add_book(struct player* target){
       for(int j = 0;j<4;j++){
 	remove_card(target,cardArray[i]);
       }
-      target.book[book_size]=cardArray[i];
-      target.book_size++;
+      target->book[book_size]=cardArray[i];
+      target->book_size++;
     }
 
   }  
@@ -95,12 +95,12 @@ int search(struct player* target, char rank){
   struct player* temp;
   temp = target;
   int count = 0;
-  while(temp.card_list.top != NULL){
+  while(temp->card_list->top != NULL){
  
-    if(temp.card_list.top.rank = rank){
+    if(temp->card_list->top->rank = rank){
       count++;
     }
-    temp.card_list.top = temp.card_list.next;
+    temp->card_list->top = temp->card_list->next;
   }
   if(count>0)
     return count;
@@ -114,14 +114,14 @@ int transfer_cards(struct player* src, struct player* dest, char rank){
   from = src;
   int count = 0;
 
-  while(from.card_list.top != NULL){
-    if(from.card_list.top == NULL)
+  while(from->card_list->top != NULL){
+    if(from->card_list->top == NULL)
       return -1;
-    if(temp.card_list.top.rank = rank){
+    if(temp->card_list->top->rank = rank){
       add_card(dest,rank);
       count++;
     }
-    from.card_list.top = from.card_list.next;
+    from->card_list->top = from->card_list->next;
   }
   return count;
   
@@ -129,7 +129,7 @@ int transfer_cards(struct player* src, struct player* dest, char rank){
 
 int game_over(struct player* target){
 
-  if(target.book[7] != NULL)
+  if(target->book[7] != NULL)
     return 1;
   else
     return 0;
@@ -139,10 +139,10 @@ int game_over(struct player* target){
 int reset_player(struct player* target){
 
   for(int i=0;i<7;i++){
-    target.book[i]==NULL:
+    target->book[i]==NULL:
   }
 
-  free(target.card_list);
+  free(target->card_list);
 
 }
 
