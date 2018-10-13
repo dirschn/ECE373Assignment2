@@ -1,30 +1,39 @@
 #include "deck.h"
+#include "player.h"
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 
-#define MAX 52
+#define MAX 51
 
 int main(void){
     shuffle();
+
+    for(int i=0; i<=MAX; i++){
+        printf("%s%c\n", deck_instance.list[i].rank, deck_instance.list[i].suit);
+    }
+
+    deal_player_cards(&user);
+    deal_player_cards(&computer);
     return 0;
 }
 
 int shuffle(){
 	printf("Shuffling deck...\n\n");
-	int i, random[MAX*2];
+	int i, random[MAX*2+1];
 	initializeDeck();
 
     srand(time(NULL));
 
-    for(i =0; i < MAX*2; i++) {
+    for(i =0; i < MAX*2+1; i++) {
         random[i] = rand() % MAX;
-        //fprintf(stdout, "%d\n", random);
     }
     moveCards(random);
+    return 0;
 }
 
 int initializeDeck(){
+    deck_instance.top_card=51;
     int count, i,suitIndex;
     char suits[]={"CHSD"};
     count=0;
@@ -122,5 +131,29 @@ int initializeDeck(){
 
 int moveCards(int numbers[]){
     struct card temp;
+    for(int i=0; i<MAX*2; i++){
+        temp=deck_instance.list[numbers[i]];
+        deck_instance.list[numbers[i]]=deck_instance.list[numbers[i+1]];
+        deck_instance.list[numbers[i+1]]=temp;
+    }
 
 }
+
+int deal_player_cards(struct player* target){
+    for(int i=0; i<7; i++){
+        add_card(target, &deck_instance.list[deck_instance.top_card]);
+        deck_instance.top_card--;
+    }
+}
+
+struct card* next_card(){
+    struct card* nextCard;
+    nextCard=&deck_instance.list[deck_instance.top_card];
+    return nextCard;
+}
+
+size_t deck_size(){
+    return deck_instance.top_card+1;
+}
+
+
