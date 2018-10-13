@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #define MAX 51
-
+/*
 int main(void){
     shuffle();
 
@@ -17,7 +17,7 @@ int main(void){
     deal_player_cards(&computer);
     return 0;
 }
-
+*/
 int shuffle(){
 	printf("Shuffling deck...\n\n");
 	int i, random[MAX*2+1];
