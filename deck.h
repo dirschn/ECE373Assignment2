@@ -75,4 +75,7 @@ size_t deck_size( );
 int initializeDeck();
 
 int shuffleRand();
+
+int moveCards(int numbers[]);
+
 #endif
