@@ -146,6 +146,10 @@ char computer_play(struct player* target);
  */
 char user_play(struct player* target);
 
+
+void print_card_list(struct player* target);
+
+void print_book(struct player* target);
 #endif
 
 

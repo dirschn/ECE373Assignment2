@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "deck.h"
 #include "card.h"
 #include "player.h"
@@ -59,6 +60,10 @@ int resetGame(){
 
 int userTurn(struct player* target){
     char userRank=user_play(target);
+    char rank10[2];
+    if(strcmp(userRank, '1')==0){
+        sprintf(userRank, "%d", 10);
+    }
     int compCardIndex=search(&computer,userRank);
     if(compCardIndex>=0){
     transfer_cards(&computer, target, userRank);
@@ -66,7 +71,7 @@ int userTurn(struct player* target){
     else{
         struct card newCard=gofish(target);
         printf("%s%c\n", newCard.rank, newCard.suit);
-        if(newRank==userRank){
+        if(newCard.rank==userRank){
             printf("Player %d got the card they wanted! %s%c. Go again.\n", target->player_number, newCard.rank, newCard.suit);
             userTurn(target);
         }
@@ -78,14 +83,14 @@ int userTurn(struct player* target){
 
 int computerTurn(struct player* target){
     char compRank=computer_play(target);
-    int compCardIndex=search(&computer,userRank);
+    int compCardIndex=search(&computer,compRank);
     if(compCardIndex>=0){
-        transfer_cards(&user, target, userRank);
-    }tran
+        transfer_cards(&user, target, compRank);
+    }
     else{
         struct card newCard=gofish(target);
         printf("a card\n");
-        if(newRank==userRank){
+        if(newCard.rank==compRank){
             printf("Player %d got the card they wanted! %s%c. Go again.\n", target->player_number, newCard.rank, newCard.suit);
             computerTurn(target);
         }
@@ -98,6 +103,6 @@ int computerTurn(struct player* target){
 
 struct card gofish(struct player* target){
     printf("\t- Go Fish, Player %d draws ", target->player_number);
-    struct card nextCard=next_card();
+    struct card nextCard=*(next_card());
     return nextCard;
 }
