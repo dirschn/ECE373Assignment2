@@ -71,26 +71,26 @@ int userTurn(struct player* target){
             userTurn(target);
         }
         else{
-
+                return 0;
         }
     }
 }
 
 int computerTurn(struct player* target){
-    char userRank=user_play(target);
+    char compRank=computer_play(target);
     int compCardIndex=search(&computer,userRank);
     if(compCardIndex>=0){
         transfer_cards(&user, target, userRank);
-    }
+    }tran
     else{
         struct card newCard=gofish(target);
-        printf("%s%c\n", newCard.rank, newCard.suit);
+        printf("a card\n");
         if(newRank==userRank){
             printf("Player %d got the card they wanted! %s%c. Go again.\n", target->player_number, newCard.rank, newCard.suit);
             computerTurn(target);
         }
         else{
-
+            return 0;
         }
     }
 }
