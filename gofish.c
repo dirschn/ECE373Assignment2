@@ -18,8 +18,7 @@ int main(int args, char* argv[]) {
             printUsers();
             userTurn();
             printUsers();
-            computer_play(&computer);
-
+            computerTurn();
         }
 
         if (game_over(&user)) {
