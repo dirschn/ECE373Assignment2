@@ -5,10 +5,10 @@
 #include <time.h>
 #include <string.h>
 
+int main(void){return 0;}
+
 char cardArray[13] = {'2','3','4','5','6','7','8','9','1','J','Q','K','A'};
 char card10[2] = {'1','0'};
-
-
 
 int add_card(struct player* target, struct card* new_card){
 
@@ -35,7 +35,7 @@ int remove_card(struct player* target, struct card* old_card){
 
   if (iterator == NULL) { return -1; } /* Return false; list is empty */
    
-   while (iterator->top.rank != *old_card->rank) { /* Check if we found the item */
+   while (iterator->top.rank != old_card->rank) { /* Check if we found the item */
      
      previous = iterator;               /* Store pointer to previous item */
      iterator = iterator->next;        /* Look at next item in list */
@@ -64,7 +64,7 @@ void print_card_list(struct player* target) {
        printf("%s%c ",target->card_list->top.rank,target->card_list->top.suit);
        target->card_list = target->card_list->next;
      }
-     printf("\n");
+     printf("/n");
 }
 
 void print_book(struct player* target) {
@@ -75,25 +75,34 @@ void print_book(struct player* target) {
   for(int i=0;i<target->book_size;i++){
     printf("%c ",temp->book[i]);
   }
-  printf("\n");
+  printf("/n");
 }
 
 char check_add_book(struct player* target){
 
   struct player* temp;
+  struct card* book;
   temp=target;
   for(int i=0;i<13;i++){
 
     int count = search(target,*(cardArray+i));
     if(count == 4){
-      for(int j = 0;j<4;j++){
-	remove_card(target,*(cardArray+i));
+
+      if(cardArray[i]=='1'){
+	book->rank[0]='1';
+	book->rank[1]='0';
       }
-      target->book[target->book_size]=cardArray[i];
-      target->book_size++;
-      if(cardArray[i]=='1')
-	return card10;
       else
+      book->rank[0]=cardArray[i];
+
+
+      for(int j = 0;j<4;j++){
+	remove_card(target,book);
+      }
+      
+      target->book[target->book_size]=*book->rank;
+      target->book_size++;
+
 	return cardArray[i];
     }
 
@@ -107,7 +116,7 @@ int search(struct player* target, char rank){
   struct player* temp;
   temp = target;
   int count = 0;
-  while(count<temp->hand_size){
+  while(temp->card_list != NULL){
  
     if(temp->card_list->top.rank[0] = rank){
       count++;
@@ -125,12 +134,19 @@ int transfer_cards(struct player* src, struct player* dest, char rank){
   struct player* from;
   from = src;
   int count = 0;
+  struct card* card;
+  if(rank=='1'){
+	card->rank[0]='1';
+	card->rank[1]='0';
+      }
+      else
+      card->rank[0]=rank;
 
   while(from->card_list != NULL){
     if(from->card_list == NULL)
       return -1;
     if(from->card_list->top.rank[0] = rank){
-      add_card(dest,rank);
+      add_card(dest,card);
       count++;
     }
     from->card_list->top = from->card_list->next->top;
@@ -172,18 +188,17 @@ char computer_play(struct player* target){
 }
 
 char user_play(struct player* target){
-/*get the rank to play with*/
+
   char c;
   printf("Player 1's turn, enter a Rank:");
   c = getchar();
-/*make sure the user has it*/
+
   while(search(target,c)==0){
     printf("Error-must have at least one card from rank to play\n");
     printf("Player 1's turn, enter a Rank:");
     c = getchar();
   }
-
-  /*return that rank*/
+  
   return c;
 
 }
