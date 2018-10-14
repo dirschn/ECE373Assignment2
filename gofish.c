@@ -16,9 +16,9 @@ int main(int args, char* argv[]) {
 
         while ( !game_over(&user) || !game_over(&computer)) {
             printUsers();
-            userTurn();
+            userTurn(&user);
             printUsers();
-            computerTurn();
+            computerTurn(&computer);
         }
 
         if (game_over(&user)) {
@@ -57,16 +57,18 @@ int resetGame(){
     reset_player(&computer);
 }
 
-int userTurn(){
-    char userRank=user_play(&user);
+int userTurn(struct player* target){
+    char userRank=user_play(target);
     int compCardIndex=search(&computer,userRank);
     if(compCardIndex>=0){
-    transfer_cards(&computer, &user, userRank);
+    transfer_cards(&computer, target, userRank);
     }
     else{
-        struct card newCard=gofish(&user);
+        struct card newCard=gofish(target);
+        printf("%s%c\n", newCard.rank, newCard.suit);
         if(newRank==userRank){
-            printf("Player %d got the card they wanted! %s%c. Go again.\n", user.player_number, );
+            printf("Player %d got the card they wanted! %s%c. Go again.\n", target->player_number, newCard.rank, newCard.suit);
+            userTurn(target);
         }
         else{
 
@@ -74,6 +76,28 @@ int userTurn(){
     }
 }
 
-struct card gofish(struct player* target){
+int computerTurn(struct player* target){
+    char userRank=user_play(target);
+    int compCardIndex=search(&computer,userRank);
+    if(compCardIndex>=0){
+        transfer_cards(&user, target, userRank);
+    }
+    else{
+        struct card newCard=gofish(target);
+        printf("%s%c\n", newCard.rank, newCard.suit);
+        if(newRank==userRank){
+            printf("Player %d got the card they wanted! %s%c. Go again.\n", target->player_number, newCard.rank, newCard.suit);
+            computerTurn(target);
+        }
+        else{
 
+        }
+    }
+}
+
+
+struct card gofish(struct player* target){
+    printf("\t- Go Fish, Player %d draws ", target->player_number);
+    struct card nextCard=next_card();
+    return nextCard;
 }
