@@ -7,14 +7,16 @@
 
 
 int main(int args, char* argv[]) {
-    while (true) {
+    int booleanVal=1;
+
+    while (booleanVal==1) {
         shuffle();
         char yesOrNo;
 
 
-        while (!game_over(&user) || !game_over(&computer)) {
+        while ( !game_over(&user) || !game_over(&computer)) {
             printUsers();
-            user_play(&user);
+            userTurn();
             printUsers();
             computer_play(&computer);
 
@@ -36,11 +38,12 @@ int main(int args, char* argv[]) {
                 resetGame();
             } else if (yesOrNo == 'N') {
                 printf("Exiting.");
-                exit(0);
+                booleanVal=0;
             } else
                 printf("Please enter 'Y' or 'N'.");
         }
     }
+    exit(0);
 }
 
 
@@ -53,4 +56,25 @@ int printUsers(){
 int resetGame(){
     reset_player(&user);
     reset_player(&computer);
+}
+
+int userTurn(){
+    char userRank=user_play(&user);
+    int compCardIndex=search(&computer,userRank);
+    if(compCardIndex>=0){
+    transfer_cards(&computer, &user, userRank);
+    }
+    else{
+        struct card newCard=gofish(&user);
+        if(newRank==userRank){
+            printf("Player %d got the card they wanted! %s%c. Go again.\n", user.player_number, );
+        }
+        else{
+
+        }
+    }
+}
+
+struct card gofish(struct player* target){
+
 }

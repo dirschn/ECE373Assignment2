@@ -105,7 +105,7 @@ int search(struct player* target, char rank){
   struct player* temp;
   temp = target;
   int count = 0;
-  while(temp->card_list != NULL){
+  while(count<temp->hand_size){
  
     if(temp->card_list->top.rank[0] = rank){
       count++;
@@ -170,18 +170,18 @@ char computer_play(struct player* target){
 }
 
 char user_play(struct player* target){
-
+/*get the rank to play with*/
   char c;
   printf("Player 1's turn, enter a Rank:");
   c = getchar();
-
+/*make sure the user has it*/
   while(search(target,c)==0){
     printf("Error-must have at least one card from rank to play\n");
     printf("Player 1's turn, enter a Rank:");
     c = getchar();
   }
-  printf("Go Fish, Player %d draws %s%c\n", target->player_number, deck_instance.list[deck_instance.top_card].rank, deck_instance.list[deck_instance.top_card].suit);
-   add_card(target, next_card());
+
+  /*return that rank*/
   return c;
 
 }
