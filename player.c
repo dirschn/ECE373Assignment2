@@ -5,8 +5,6 @@
 #include <time.h>
 #include <string.h>
 
-int main(void){return 0;}
-
 char cardArray[13] = {'2','3','4','5','6','7','8','9','1','J','Q','K','A'};
 char card10[2] = {'1','0'};
 
@@ -15,7 +13,8 @@ int add_card(struct player* target, struct card* new_card){
    /* Allocate space for new element */
    struct player* temp;  
    temp = (struct player*)malloc(sizeof(struct player));
-   if (temp->card_list == NULL) { return -1; }
+   temp->card_list = (struct card*)malloc(sizeof(struct card));
+   //if (temp->card_list == NULL) { return -1; }
 
    /* Initialize new element */
    temp->card_list->top = *new_card;
@@ -64,25 +63,25 @@ void print_card_list(struct player* target) {
        printf("%s%c ",target->card_list->top.rank,target->card_list->top.suit);
        target->card_list = target->card_list->next;
      }
-     printf("/n");
+     printf("\n");
 }
 
 void print_book(struct player* target) {
-  struct player* temp;
-  temp = target;
+  struct player* temp = target;
   int a=temp->player_number;
   printf("Player %d's Book - ",a);
   for(int i=0;i<target->book_size;i++){
     printf("%c ",temp->book[i]);
   }
-  printf("/n");
+  printf("\n");
 }
 
 char check_add_book(struct player* target){
 
   struct player* temp;
-  struct card* book;
+  temp = (struct player*)malloc(sizeof(struct player));
   temp=target;
+  struct card* book;
   for(int i=0;i<13;i++){
 
     int count = search(target,*(cardArray+i));
@@ -112,16 +111,17 @@ char check_add_book(struct player* target){
 }
 
 int search(struct player* target, char rank){
-
+  
   struct player* temp;
+  temp = (struct player*)malloc(sizeof(struct player));
   temp = target;
   int count = 0;
-  while(temp->card_list != NULL){
+  while(target->card_list != NULL){
  
-    if(temp->card_list->top.rank[0] = rank){
+    if(target->card_list->top.rank[0] = rank){
       count++;
     }
-    temp->card_list->top = temp->card_list->next->top;
+    target->card_list->top = target->card_list->next->top;
   }
   if(count>0)
     return count;
@@ -132,6 +132,7 @@ int search(struct player* target, char rank){
 int transfer_cards(struct player* src, struct player* dest, char rank){
 
   struct player* from;
+  from = (struct player*)malloc(sizeof(struct player));
   from = src;
   int count = 0;
   struct card* card;
