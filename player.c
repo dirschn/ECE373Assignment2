@@ -8,6 +8,8 @@
 char cardArray[13] = {'2','3','4','5','6','7','8','9','1','J','Q','K','A'};
 char card10[2] = {'1','0'};
 
+
+
 int add_card(struct player* target, struct card* new_card){
 
    /* Allocate space for new element */
@@ -62,7 +64,7 @@ void print_card_list(struct player* target) {
        printf("%s%c ",target->card_list->top.rank,target->card_list->top.suit);
        target->card_list = target->card_list->next;
      }
-     printf("/n");
+     printf("\n");
 }
 
 void print_book(struct player* target) {
@@ -73,7 +75,7 @@ void print_book(struct player* target) {
   for(int i=0;i<target->book_size;i++){
     printf("%c ",temp->book[i]);
   }
-  printf("/n");
+  printf("\n");
 }
 
 char check_add_book(struct player* target){
