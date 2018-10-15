@@ -109,7 +109,7 @@ char *check_add_book(struct player *target) {
                 remove_card(target, &book);
             }
             sprintf(target->book[target->book_size], "%s", &book.rank);
-
+            printf("\t- Player %d books %s\n", target->player_number, book.rank);
             target->book_size++;
             return rank;
         }

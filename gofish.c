@@ -55,7 +55,7 @@ int main(int args, char *argv[]) {
             scanf("%c", &yesOrNo);
         }
     }
-    exit(0);
+    return 0;
 }
 
 
@@ -83,6 +83,8 @@ int userTurn(struct player *target) {
             printf("%s%c, ", fish[i].rank, fish[i].suit);
         }
         printf("%s%c\n", fish[count - 1].rank, fish[count - 1].suit);
+
+
     } else {
         printf("\t- Player %d has no %s's\n", computer.player_number, userRank);
         gofish(target, userRank);
