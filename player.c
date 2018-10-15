@@ -6,6 +6,7 @@
 #include <string.h>
 
 char cardArray[13] = {'2','3','4','5','6','7','8','9','1','J','Q','K','A'};
+char suitArray[4] = {'S','C','H','D'};
 char card10[2] = {'1','0'};
 struct card fish[3];
 /*
@@ -105,7 +106,9 @@ char* check_add_book(struct player* target){
       book->rank[0]=cardArray[i];
     */
     if(count==4){
-      for(int j = 0;j<4;j++){
+	strcpy(book->rank,rank);
+      for(int j=0;j<4;j++){
+	strcpy(book->suit,suitArray[j]);
 	remove_card(target,book);
       }
       
@@ -195,12 +198,11 @@ char* computer_play(struct player* target){
     rank=cardArray[rand()%13];
     if(rank=='1'){
       sprintf(rankReal, "%d", 10);
+	if(search(target,rankReal)>0){invalidrank=1;}
     }
     else{
       sprintf(rankReal, "%c", rank);
-      if(search(target,rankReal)>=0){
-    invalidrank=1;
-      }
+      if(search(target,rankReal)>0){invalidrank=1;}
   }
 
 }
