@@ -12,17 +12,16 @@ int main(int args, char* argv[]) {
 
     //initialize_player(&user);
     //initialize_player(&computer); 
-     user.card_list = (struct hand*)malloc(50*sizeof(struct hand));
-      computer.card_list = (struct hand*)malloc(50*sizeof(struct hand));
-
+    
+    
     while (booleanVal==1) {
         shuffle();
         char yesOrNo;
 
 
         while ( !game_over(&user) || !game_over(&computer)) {
-	  deal_player_cards(&user);
-	  deal_player_cards(&computer);
+            deal_player_cards(&user);
+	    deal_player_cards(&computer);
 	    printUsers();
             userTurn(&user);
             printUsers();
@@ -56,7 +55,6 @@ int main(int args, char* argv[]) {
 
 int printUsers(){
     print_card_list(&user);
-    print_card_list(&computer);
     print_book(&user);
     print_book(&computer);
 }
@@ -67,16 +65,13 @@ int resetGame(){
 }
 
 int userTurn(struct player* target){
-  /*char userRank=user_play(target);
+    char userRank=user_play(target);
     char rank10[2];
     if(strcmp(userRank, '1')==0){
         sprintf(userRank, "%d", 10);
-	}*/
-  char* userRank;
-  userRank=user_play(target);
-  //sprintf(userRank, "%s",*user_play(target));
+    }
     int compCardIndex=search(&computer,userRank);
-    if(compCardIndex>0){
+    if(compCardIndex>=0){
     transfer_cards(&computer, target, userRank);
     }
     else{
@@ -87,15 +82,14 @@ int userTurn(struct player* target){
             userTurn(target);
         }
         else{
-	  add_card(&user, &newCard);
                 return 0;
         }
     }
 }
 
 int computerTurn(struct player* target){
-    char* compRank=computer_play(target);
-    int compCardIndex=search(&user,compRank);
+    char compRank=computer_play(target);
+    int compCardIndex=search(&computer,compRank);
     if(compCardIndex>=0){
         transfer_cards(&user, target, compRank);
     }
@@ -107,7 +101,6 @@ int computerTurn(struct player* target){
             computerTurn(target);
         }
         else{
-	  add_card(&computer,&newCard);
             return 0;
         }
     }

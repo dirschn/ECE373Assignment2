@@ -74,7 +74,7 @@ char check_add_book(struct player* target);
  *
  *  Return: If the player has a card of that rank, return 1, else return 0
  */
-int search(struct player* target, char rank);
+int search(struct player* target, char rank[2]);
 
 /*
  * Function: transfer_cards
@@ -91,7 +91,7 @@ int search(struct player* target, char rank);
  *   Return: 0 if no cards found/transferred, <0 if error, otherwise 
  *   return value indicates number of cards transferred
  */   
-int transfer_cards(struct player* src, struct player* dest, char rank); 
+int transfer_cards(struct player* src, struct player* dest, char* rank); 
 
 /*
  * Function: game_over
@@ -129,7 +129,7 @@ int reset_player(struct player* target);
  *
  *   Rank: return a valid selected rank
  */
-char computer_play(struct player* target);
+char* computer_play(struct player* target);
 
 /* 
  * Function: user_play
@@ -144,7 +144,7 @@ char computer_play(struct player* target);
  * 
  *   returns: return a valid selected rank
  */
-char user_play(struct player* target);
+char* user_play(struct player* target);
 
 
 void print_card_list(struct player* target);

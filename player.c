@@ -7,15 +7,21 @@
 
 char cardArray[13] = {'2','3','4','5','6','7','8','9','1','J','Q','K','A'};
 char card10[2] = {'1','0'};
+/*
+int initialize_player(struct player* target){
+  target = (struct player*)malloc(sizeof(struct player));
+  target->card_list = (struct hand*)malloc(50*sizeof(struct hand));
+  return 0;
+  }*/
 
 int add_card(struct player* target, struct card* new_card){
 
    /* Allocate space for new element */
-   struct player* temp;  
+   //if (temp->card_list == NULL) { return -1; }
+   struct player* temp;
    temp = (struct player*)malloc(sizeof(struct player));
    temp->card_list = (struct card*)malloc(sizeof(struct card));
-   //if (temp->card_list == NULL) { return -1; }
-
+  
    /* Initialize new element */
    temp->card_list->top = *new_card;
    temp->card_list->next = target->card_list;
@@ -57,11 +63,15 @@ int remove_card(struct player* target, struct card* old_card){
 }
 
 void print_card_list(struct player* target) {
+     struct player* temp;
+     temp = (struct player*)malloc(sizeof(struct player));
+     temp->card_list = (struct card*)malloc(sizeof(struct card));
+     *temp = *target;
      int a = target->player_number;
      printf("Player %d's Hand - ",a);
      for(int i =0; i<target->hand_size;i++) {
-       printf("%s%c ",target->card_list->top.rank,target->card_list->top.suit);
-       target->card_list = target->card_list->next;
+       printf("%s%c ",temp->card_list->top.rank,temp->card_list->top.suit);
+       temp->card_list = temp->card_list->next;
      }
      printf("\n");
 }
@@ -78,9 +88,6 @@ void print_book(struct player* target) {
 
 char check_add_book(struct player* target){
 
-  struct player* temp;
-  temp = (struct player*)malloc(sizeof(struct player));
-  temp=target;
   struct card* book;
   for(int i=0;i<13;i++){
 
@@ -110,18 +117,20 @@ char check_add_book(struct player* target){
   
 }
 
-int search(struct player* target, char rank){
+int search(struct player* target, char rank[2]){
   
-  struct player* temp;
-  temp = (struct player*)malloc(sizeof(struct player));
-  temp = target;
   int count = 0;
-  while(target->card_list != NULL){
+  struct player* temp;
+   temp = (struct player*)malloc(sizeof(struct player));
+   temp->card_list = (struct card*)malloc(sizeof(struct card));
+   *temp=*target;
+   
+  while(temp->card_list != NULL){
  
-    if(target->card_list->top.rank[0] = rank){
+    if(strncmp(temp->card_list->top.rank,rank,2*sizeof(char))==0  ){
       count++;
     }
-    target->card_list->top = target->card_list->next->top;
+    temp->card_list = temp->card_list->next;
   }
   if(count>0)
     return count;
@@ -129,29 +138,31 @@ int search(struct player* target, char rank){
     return 0;
 }
 
-int transfer_cards(struct player* src, struct player* dest, char rank){
-
-  struct player* from;
-  from = (struct player*)malloc(sizeof(struct player));
-  from = src;
+int transfer_cards(struct player* src, struct player* dest, char* rank){
+  
   int count = 0;
   struct card* card;
-  if(rank=='1'){
-	card->rank[0]='1';
-	card->rank[1]='0';
-      }
-      else
-      card->rank[0]=rank;
+  card=(struct card*)malloc(sizeof(struct card));
+  //if(rank=='1'){
+  //	card->rank[0]='1';
+  //	card->rank[1]='0';
+  //  }
+  //  else
+  //  card->rank[0]=rank;
 
-  while(from->card_list != NULL){
-    if(from->card_list == NULL)
+  if(src->card_list == NULL)
       return -1;
-    if(from->card_list->top.rank[0] = rank){
+  
+  while(src->card_list != NULL){
+    if(strncmp(*src->card_list->top.rank, *rank, 2*sizeof(char))==0){
       add_card(dest,card);
       count++;
     }
-    from->card_list->top = from->card_list->next->top;
+    src->card_list = src->card_list->next;
   }
+
+  
+  
   return count;
   
 }
@@ -172,32 +183,38 @@ int reset_player(struct player* target){
   
 }
 
-char computer_play(struct player* target){
+char* computer_play(struct player* target){
 
   srand(time(NULL));
   int invalidrank=0;
   char rank;
+  static char rankReal[2];
   while(invalidrank==0){
 
     rank=cardArray[rand()%13];
-
-    if(search(target,rank)>=0);
+    if(rank=='1'){
+      sprintf(rankReal, "%d", 10);
+    }
+    else{
+      sprintf(rankReal, "%c", rank);
+    if(search(target,rankReal)>=0);
     invalidrank=1;
   }
-  return rank;
+  return rankReal;
 
 }
+}
 
-char user_play(struct player* target){
+char* user_play(struct player* target){
 
-  char c;
+  static char c[2];
   printf("Player 1's turn, enter a Rank:");
-  c = getchar();
+  fgets(c,sizeof(c),stdin);
 
   while(search(target,c)==0){
     printf("Error-must have at least one card from rank to play\n");
     printf("Player 1's turn, enter a Rank:");
-    c = getchar();
+    fgets(c,sizeof(c),stdin);
   }
   
   return c;

@@ -127,6 +127,7 @@ int initializeDeck(){
         }
         count++;
     }
+    return 0;
 }
 
 int moveCards(int numbers[]){
@@ -136,19 +137,22 @@ int moveCards(int numbers[]){
         deck_instance.list[numbers[i]]=deck_instance.list[numbers[i+1]];
         deck_instance.list[numbers[i+1]]=temp;
     }
+    return 0;
 
 }
 
 int deal_player_cards(struct player* target){
     for(int i=0; i<7; i++){
-        add_card(target, &deck_instance.list[deck_instance.top_card]);
-        deck_instance.top_card--;
+      add_card(target, next_card());
+      deck_instance.top_card--;
     }
+    return 0;
 }
 
 struct card* next_card(){
     struct card* nextCard;
     nextCard=&deck_instance.list[deck_instance.top_card];
+    deck_instance.top_card--;
     return nextCard;
 }
 
