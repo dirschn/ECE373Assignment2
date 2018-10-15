@@ -108,7 +108,7 @@ char *check_add_book(struct player *target) {
                 book.suit = suitArray[j];
                 remove_card(target, &book);
             }
-            sprintf(target->book[target->book_size],"%s", &book.rank);
+            sprintf(target->book[target->book_size], "%s", &book.rank);
 
             target->book_size++;
             return rank;
@@ -168,7 +168,7 @@ int transfer_cards(struct player *src, struct player *dest, char rank[2]) {
 
 int game_over(struct player *target) {
 
-    if (target->book_size==7)
+    if (target->book_size == 7)
         return 1;
     else
         return 0;
@@ -184,7 +184,7 @@ int reset_player(struct player *target) {
 
 char *computer_play(struct player *target) {
 
-    printf("Player 2's turn, enter a Rank:");
+    printf("Player 2's turn, enter a Rank: ");
     srand(time(NULL));
     int invalidrank = 0;
     char rank;
@@ -209,7 +209,7 @@ char *user_play(struct player *target) {
 
     static char c[2];
 
-    printf("Player 1's turn, enter a Rank:");
+    printf("Player 1's turn, enter a Rank: ");
     //fgets(c,sizeof(c),stdin);
     scanf("%s", &c);
 
