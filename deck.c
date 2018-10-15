@@ -144,7 +144,6 @@ int moveCards(int numbers[]){
 int deal_player_cards(struct player* target){
     for(int i=0; i<7; i++){
       add_card(target, next_card());
-      deck_instance.top_card--;
     }
     return 0;
 }
