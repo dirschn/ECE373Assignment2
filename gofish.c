@@ -29,10 +29,8 @@ int main(int args, char* argv[]) {
 	  
 	    printUsers();
             userTurn(&user);
-	    check_add_book(&user);
             printUsers();
             computerTurn(&computer);
-	    check_add_book(&computer);
         }
 
         if (game_over(&user)) {
@@ -73,14 +71,9 @@ int resetGame(){
 }
 
 int userTurn(struct player* target){
-  /*char userRank=user_play(target);
-    char rank10[2];
-    if(strcmp(userRank, '1')==0){
-        sprintf(userRank, "%d", 10);
-	}*/
+
   char* userRank;
   userRank=user_play(target);
-  //sprintf(userRank, "%s",*user_play(target));
     int compCardIndex=search(&computer,userRank);
     if(compCardIndex>0){
       int count = transfer_cards(&computer, target, userRank);
@@ -91,20 +84,12 @@ int userTurn(struct player* target){
       printf("%s%c\n", fish[count-1].rank,fish[count-1].suit);
     }
     else{
-      printf("\t- Player %d has no %s's\n",computer.player_number,userRank);
-        struct card newCard=gofish(target);
-        printf("%s%c\n", newCard.rank, newCard.suit);
-        if(newCard.rank==userRank){
-            printf("Player %d got the card they wanted! %s%c. Go again.\n", target->player_number, newCard.rank, newCard.suit);
-            userTurn(target);
-        }
-        else{
-	  add_card(&user, &newCard);
-	  
-        }
+        printf("\t- Player %d has no %s's\n",computer.player_number,userRank);
+        gofish(target, userRank);
     }
-  printf("\t- Player 2's turn\n\n");
-                return 0;
+    check_add_book(&user);
+    printf("\t- Player 2's turn\n\n");
+    return 0;
 }
 
 int computerTurn(struct player* target){
@@ -112,33 +97,42 @@ int computerTurn(struct player* target){
      compRank =computer_play(target);
     int userCardCount=search(&user,compRank);
     if(userCardCount>0){
-      int count = transfer_cards(&user, target, compRank);
-      printf("\t- Player 1 has ");
-      for(int i =0;i<count-1;i++){
-	printf("%s%c, ",fish[i].rank, fish[i].suit);
-      }
+        int count = transfer_cards(&user, target, compRank);
+        printf("\t- Player 1 has ");
+        for(int i =0;i<count-1;i++){
+	        printf("%s%c, ",fish[i].rank, fish[i].suit);
+        }
       printf("%s%c\n", fish[count-1].rank,fish[count-1].suit);
     }
     else{
-       printf("\t- Player %d has no %s's\n",user.player_number,compRank);
-        struct card newCard=gofish(target);
+        printf("\t- Player %d has no %s's\n",user.player_number,compRank);
+        gofish(target,compRank);
         printf("a card\n");
-        if(newCard.rank==compRank){
-            printf("Player %d got the card they wanted! %s%c. Go again.\n", target->player_number, newCard.rank, newCard.suit);
-            computerTurn(target);
         }
-        else{
-	  add_card(&computer,&newCard);
-	    printf("\t- Player 1's turn\n\n");
-            return 0;
-        }
+    check_add_book(&computer);
+    printf("\t- Player 1's turn\n\n");
+    return 0;
     }
   
-}
 
 
-struct card gofish(struct player* target){
+
+int gofish(struct player* target, char* rankDesire){
     printf("\t- Go Fish, Player %d draws ", target->player_number);
     struct card nextCard=*(next_card());
-    return nextCard;
+    add_card(target, &nextCard);
+    if(strcmp(nextCard.rank, rankDesire)==0){
+        printf("Player %d got the card they wanted! %s%c. Go again.\n", target->player_number, nextCard.rank, nextCard.suit);
+        if(target->player_number==computer.player_number)
+            computerTurn(target);
+        else if(target->player_number==user.player_number)
+            user_play(target);
+    }
+
+    if(target->player_number==user.player_number)
+        printf("%s%c\n", nextCard.rank, nextCard.suit);
+    else if(target->player_number==computer.player_number)
+        printf("a card");
+
+    return 0;
 }

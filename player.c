@@ -6,7 +6,7 @@
 #include <string.h>
 
 char cardArray[13] = {'2','3','4','5','6','7','8','9','1','J','Q','K','A'};
-char suitArray[4] = {'S','C','H','D'};
+char suitArray[4] = {"SCHD"};
 char card10[2] = {'1','0'};
 struct card fish[3];
 /*
@@ -42,7 +42,7 @@ int remove_card(struct player* target, struct card* old_card){
 
   if (iterator == NULL) { return -1; } /* Return false; list is empty */
    
-   while (iterator->top.rank != old_card->rank) { /* Check if we found the item */
+   while (strcmp(iterator->top.rank, old_card->rank)) { /* Check if we found the item */
      
      previous = iterator;               /* Store pointer to previous item */
      iterator = iterator->next;        /* Look at next item in list */
@@ -91,30 +91,23 @@ void print_book(struct player* target) {
 
 char* check_add_book(struct player* target){
 
-  struct card* book;
+  struct card book;
+  //book=(struct card *) malloc(sizeof(struct card));
   static char rank[2];
   for(int i=0;i<13;i++){
     sprintf(rank,"%c", cardArray[i]);
     int count = search(target,rank);
-    /*if(count == 4){
-
-      if(cardArray[i]=='1'){
-	book->rank[0]='1';
-	book->rank[1]='0';
-      }
-      else
-      book->rank[0]=cardArray[i];
-    */
     if(count==4){
-	strcpy(book->rank,rank);
-      for(int j=0;j<4;j++){
-	strcpy(book->suit,suitArray[j]);
-	remove_card(target,book);
-      }
+        strcpy(book.rank,rank);
+        for(int j=0;j<4;j++){
+	        book.suit=suitArray[j];
+	        remove_card(target,&book);
+        }
       
-      target->book[target->book_size]=&book->rank;
-      target->book_size++;
-      return rank;
+        target->book[target->book_size]=book.rank;
+        //free(book);
+        target->book_size++;
+        return rank;
     }
        
     }
