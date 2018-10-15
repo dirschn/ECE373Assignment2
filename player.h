@@ -15,7 +15,7 @@ struct card fish[3];
  */
 struct player {
   struct hand* card_list;
-  char book[7];
+  char book[7][2];
   size_t hand_size;
   size_t book_size;
   int player_number;

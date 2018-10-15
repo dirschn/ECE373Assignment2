@@ -25,7 +25,7 @@ int main(int args, char* argv[]) {
 	deal_player_cards(&user);
 	deal_player_cards(&computer);
 
-        while ( !game_over(&user) || !game_over(&computer)) {
+        while ( game_over(&user)==0 && game_over(&computer)==0 ) {
 	  
 	    printUsers();
             userTurn(&user);
@@ -42,16 +42,18 @@ int main(int args, char* argv[]) {
 
         printf("Do you want to play again [Y/N]: ");
         scanf("%c", &yesOrNo);
-        _Bool finish = 1;
-        while (finish) {
+        int finish = 1;
+        while (finish==1) {
             if (yesOrNo == 'Y') {
                 finish = 0;
                 resetGame();
             } else if (yesOrNo == 'N') {
                 printf("Exiting.");
                 booleanVal=0;
+                finish=0;
             } else
                 printf("Please enter 'Y' or 'N'.");
+                scanf("%c", &yesOrNo);
         }
     }
     exit(0);
