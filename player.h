@@ -6,6 +6,7 @@
 
 
 struct card fish[3];
+struct card fishSrc[3];
 
 /*
  * Structure: player

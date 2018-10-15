@@ -77,6 +77,8 @@ int userTurn(struct player *target) {
     userRank = user_play(target);
     int compCardIndex = search(&computer, userRank);
     if (compCardIndex > 0) {
+        int countSrc=playerCardsTransfer(target, userRank);
+
         int count = transfer_cards(&computer, target, userRank);
         printf("\t- Player 2 has ");
         for (int i = 0; i < count - 1; i++) {
@@ -84,7 +86,12 @@ int userTurn(struct player *target) {
         }
         printf("%s%c\n", fish[count - 1].rank, fish[count - 1].suit);
 
+        printf("\t- Player 1 has ");
+        for (int i = 0; i < countSrc - 1; i++) {
+            printf("%s%c, ", fishSrc[i].rank, fishSrc[i].suit);
+        }
 
+        printf("%s%c\n", fishSrc[countSrc - 1].rank, fishSrc[countSrc - 1].suit);
     } else {
         printf("\t- Player %d has no %s's\n", computer.player_number, userRank);
         gofish(target, userRank);
@@ -99,13 +106,23 @@ int computerTurn(struct player *target) {
     compRank = computer_play(target);
     int userCardCount = search(&user, compRank);
     if (userCardCount > 0) {
+        int countSrc=playerCardsTransfer(target,compRank);
         int count = transfer_cards(&user, target, compRank);
+
         printf("\t- Player 1 has ");
         for (int i = 0; i < count - 1; i++) {
             printf("%s%c, ", fish[i].rank, fish[i].suit);
         }
 
         printf("%s%c\n", fish[count - 1].rank, fish[count - 1].suit);
+
+
+        printf("\t- Player 2 has ");
+        for (int i = 0; i < countSrc - 1; i++) {
+            printf("%s%c, ", fishSrc[i].rank, fishSrc[i].suit);
+        }
+
+        printf("%s%c\n", fishSrc[countSrc - 1].rank, fishSrc[countSrc - 1].suit);
     } else {
         printf("\t- Player %d has no %s's\n", user.player_number, compRank);
         gofish(target, compRank);
@@ -138,4 +155,23 @@ int gofish(struct player *target, char *rankDesire) {
         printf("a card\n");
 
     return 0;
+}
+
+int playerCardsTransfer(struct player *target,char rank[2]){
+    int count=0;
+
+    struct player *temp;
+    temp = (struct player *) malloc(sizeof(struct player));
+    temp->card_list = (struct card *) malloc(sizeof(struct card));
+    *temp = *target;
+
+    while (temp->card_list != NULL) {
+        if (strncmp(temp->card_list->top.rank, rank, 2 * sizeof(char)) == 0) {
+
+            fishSrc[count] = temp->card_list->top;
+            count++;
+        }
+        temp->card_list = temp->card_list->next;
+    }
+    return count;
 }
