@@ -31,7 +31,7 @@ int add_card(struct player *target, struct card *new_card) {
 
 int remove_card(struct player *target, struct card *old_card) {
 
-    struct hand *iterator = target->card_list; /iterator to iterate through linked list
+    struct hand *iterator = target->card_list; //iterator to iterate through linked list
     struct hand *previous = NULL; //holds spot in linked list previous to that of iterator
 
 
@@ -102,15 +102,17 @@ char *check_add_book(struct player *target) {
             sprintf(rank, "%c", cardArray[i]);
 
         int count = search(target, rank);
-       
+       /*if it finds 4 of a kind then it copies the rank to the card structure and iterates 4 times to remove each suit for the found rank */
         if (count == 4) {
             strcpy(book.rank, rank);
             for (int j = 0; j < 4; j++) {
                 book.suit = suitArray[j];
                 remove_card(target, &book);
             }
+	    /*copies the temporary card to the target card*/
             sprintf(target->book[target->book_size],"%s", &book.rank);
-
+		
+	    /*increases the target's book size*/
             target->book_size++;
             return rank;
         }
@@ -121,13 +123,13 @@ char *check_add_book(struct player *target) {
 
 
 int search(struct player *target, char rank[2]) {
-
+    /*defining count and making temporary player structure*/
     int count = 0;
     struct player *temp;
     temp = (struct player *) malloc(sizeof(struct player));
     temp->card_list = (struct card *) malloc(sizeof(struct card));
     *temp = *target;
-
+    /*while the card list still has cards left if it finds a match then it increases the count and continues to the next card*/
     while (temp->card_list != NULL) {
 
         if (strncmp(temp->card_list->top.rank, rank, 2 * sizeof(char)) == 0) {
@@ -142,16 +144,16 @@ int search(struct player *target, char rank[2]) {
 }
 
 int transfer_cards(struct player *src, struct player *dest, char rank[2]) {
-
+    /*defining count and making temporary player structure*/
     int count = 0;
     struct player *temp;
     temp = (struct player *) malloc(sizeof(struct player));
     temp->card_list = (struct card *) malloc(sizeof(struct card));
     *temp = *src;
-
+    /*returns -1 if the card list is empty at the start*/
     if (temp->card_list == NULL)
         return -1;
-
+   /*while the card list is not empty adds cards to destination and removes cards from source, increments count, and adds the cards to the fish array to be printed out*/
     while (temp->card_list != NULL) {
         if (strncmp(temp->card_list->top.rank, rank, 2 * sizeof(char)) == 0) {
 
@@ -168,7 +170,7 @@ int transfer_cards(struct player *src, struct player *dest, char rank[2]) {
 }
 
 int game_over(struct player *target) {
-
+    /*if the target has a full book (7) then it triggers a game over*/
     if (target->book_size==7)
         return 1;
     else
@@ -178,6 +180,7 @@ int game_over(struct player *target) {
 
 int reset_player(struct player *target) {
 
+    /*frees the malloc'd card list and sets the book array to 0*/
     free(target->card_list);
     memset(&target->book, 0, sizeof(target->book));
 
@@ -190,6 +193,7 @@ char *computer_play(struct player *target) {
     int invalidrank = 0;
     char rank;
     static char rankReal[2];
+    /*while the rank has not been validated it picks a random card from cardArray then searches to see if it is in the computers hand*/
     while (invalidrank == 0) {
 
         rank = cardArray[rand() % 13];
@@ -209,11 +213,11 @@ char *computer_play(struct player *target) {
 char *user_play(struct player *target) {
 
     static char c[2];
-
+    /*get input from user*/
     printf("Player 1's turn, enter a Rank: ");
     //fgets(c,sizeof(c),stdin);
     scanf("%s", &c);
-
+    /*checks to see if input from user is valid*/
     while (search(target, c) == 0) {
         printf("Error-must have at least one card from rank to play \n");
         printf("Player 1's turn, enter a Rank: ");

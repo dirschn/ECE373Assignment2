@@ -5,8 +5,8 @@
 #include "card.h"
 
 
-struct card fish[3];
-struct card fishSrc[3];
+struct card fish[3]; //card array to hold the cards player has before transfer, this allows the cards to be printed to the terminal
+struct card fishSrc[3]; //card array to hold the cards that the player giving the cards away has, allows cards to be printed to the terminal
 
 /*
  * Structure: player
@@ -16,10 +16,10 @@ struct card fishSrc[3];
  */
 struct player {
   struct hand* card_list;
-  char book[7][2];
-  size_t hand_size;
+  char book[7][2]; //changed book array to allow for 10 to be stored more easily
+  size_t hand_size; //created hand_size and book_size to help functions
   size_t book_size;
-  int player_number;
+  int player_number; //created player_number to print out correct player numbers to terminal 
 };
 
 /* 
