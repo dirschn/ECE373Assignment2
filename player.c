@@ -5,17 +5,11 @@
 #include <time.h>
 #include <string.h>
 
-char cardArray[13] = {'2', '3', '4', '5', '6', '7', '8', '9', '1', 'J', 'Q', 'K', 'A'};
-char suitArray[4] = {"SCHD"};
-char card10[2] = {'1', '0'};
-struct card fish[3];
+char cardArray[13] = {'2', '3', '4', '5', '6', '7', '8', '9', '1', 'J', 'Q', 'K', 'A'}; //array of each rank 
+char suitArray[4] = {"SCHD"}; //array of each suit
+char card10[2] = {'1', '0'}; //array to handle 10 card
+struct card fish[3]; //array to store transferred cards
 
-/*
-int initialize_player(struct player* target){
-  target = (struct player*)malloc(sizeof(struct player));
-  target->card_list = (struct hand*)malloc(50*sizeof(struct hand));
-  return 0;
-  }*/
 
 int add_card(struct player *target, struct card *new_card) {
 
@@ -37,8 +31,8 @@ int add_card(struct player *target, struct card *new_card) {
 
 int remove_card(struct player *target, struct card *old_card) {
 
-    struct hand *iterator = target->card_list;
-    struct hand *previous = NULL;
+    struct hand *iterator = target->card_list; /iterator to iterate through linked list
+    struct hand *previous = NULL; //holds spot in linked list previous to that of iterator
 
 
     if (iterator == NULL) { return -1; } /* Return false; list is empty */
@@ -67,12 +61,15 @@ int remove_card(struct player *target, struct card *old_card) {
 }
 
 void print_card_list(struct player *target) {
-    struct player *temp;
+    /* Creates and mallocs temporary player structure equal to target */
+    struct player *temp; 
     temp = (struct player *) malloc(sizeof(struct player));
     temp->card_list = (struct card *) malloc(sizeof(struct card));
     *temp = *target;
+    /* sets player number and prints it */
     int a = target->player_number;
     printf("Player %d's Hand - ", a);
+    /* iterates through players hand and prints it out */
     for (int i = 0; i < target->hand_size; i++) {
         printf("%s%c ", temp->card_list->top.rank, temp->card_list->top.suit);
         temp->card_list = temp->card_list->next;
@@ -81,9 +78,11 @@ void print_card_list(struct player *target) {
 }
 
 void print_book(struct player *target) {
+    /* creates temp target structure */
     struct player *temp = target;
     int a = temp->player_number;
     printf("Player %d's Book - ", a);
+    /* iterates through target's book and prints it out */
     for (int i = 0; i < target->book_size; i++) {
         printf("%s ", temp->book[i]);
     }
@@ -91,17 +90,19 @@ void print_book(struct player *target) {
 }
 
 char *check_add_book(struct player *target) {
-
+    /* defines a card structure and char array of 2 */
     struct card book;
     static char rank[2];
+    /* iterates through each card in the cardArray and then checks to see if there is four matches by using the search function */
     for (int i = 0; i < 13; i++) {
+        /* if statement to check if cardArray is at the 1 then uses sprintf to make it into a 10 */
         if (cardArray[i] == '1')
             sprintf(rank, "%d", 10);
         else
             sprintf(rank, "%c", cardArray[i]);
 
-
         int count = search(target, rank);
+       
         if (count == 4) {
             strcpy(book.rank, rank);
             for (int j = 0; j < 4; j++) {
