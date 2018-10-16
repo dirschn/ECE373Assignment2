@@ -11,19 +11,16 @@ int main(int args, char *argv[]) {
 
     //initialize_player(&user);
     //initialize_player(&computer); 
-    
+
 
     while (booleanVal == 1) {
-        
-        user.player_number = 1;
-        computer.player_number = 2;
+
         user.card_list = (struct hand *) malloc(50 * sizeof(struct hand));
         computer.card_list = (struct hand *) malloc(50 * sizeof(struct hand));
-
+        user.player_number = 1;
+        computer.player_number = 2;
         user.book_size = 0;
         computer.book_size = 0;
-	user.hand_size = 0;
-	computer.hand_size = 0;
         shuffle();
         char yesOrNo;
         deal_player_cards(&user);
@@ -34,11 +31,11 @@ int main(int args, char *argv[]) {
             printUsers();
             userTurn(&user);
 
-            if (user.hand_size == 0 && deck_size() != 0) {
+            if (user.hand_size == 0) {
                 struct card nextCard = *(next_card());
                 add_card(&user, &nextCard);
             }
-            if (computer.hand_size == 0 && deck_size() != 0) {
+            if (computer.hand_size == 0) {
                 struct card nextCard = *(next_card());
                 add_card(&computer, &nextCard);
             }
@@ -47,11 +44,11 @@ int main(int args, char *argv[]) {
             computerTurn(&computer);
 
 
-            if (user.hand_size == 0 && deck_size() != 0) {
+            if (user.hand_size == 0) {
                 struct card nextCard = *(next_card());
                 add_card(&user, &nextCard);
             }
-            if (computer.hand_size == 0 && deck_size() != 0) {
+            if (computer.hand_size == 0) {
                 struct card nextCard = *(next_card());
                 add_card(&computer, &nextCard);
             }
@@ -158,13 +155,17 @@ int gofish(struct player *target, char *rankDesire) {
     printf("\t- Go Fish, Player %d draws ", target->player_number);
     struct card nextCard = *(next_card());
     add_card(target, &nextCard);
-    if (strcmp(nextCard.rank, rankDesire) == 0) {
-        printf("the card they wanted! %s%c. Go again.\n", nextCard.rank,
-               nextCard.suit);
-        if (target->player_number == computer.player_number)
+    if (strcmp(&nextCard.rank, rankDesire) == 0) {
+        printf("the card they wanted! %s%c. Go again.\n\n", nextCard.rank, nextCard.suit);
+
+        if (target->player_number == computer.player_number) {
+            printUsers();
             computerTurn(target);
-        else if (target->player_number == user.player_number)
+        }
+        else if (target->player_number == user.player_number) {
+            printUsers();
             user_play(target);
+        }
     }
 
     if (target->player_number == user.player_number)
