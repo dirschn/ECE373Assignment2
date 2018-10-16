@@ -14,4 +14,6 @@ int userTurn();
 int computerTurn();
 
 int gofish(struct player* target, char* rankDesire);
+
+int playerTransferCards(struct player* target, char rank[2]);
 #endif

@@ -214,8 +214,8 @@ char *user_play(struct player *target) {
     scanf("%s", &c);
 
     while (search(target, c) == 0) {
-        printf("Error-must have at least one card from rank to play ");
-        printf("Player 1's turn, enter a Rank:\n");
+        printf("Error-must have at least one card from rank to play \n");
+        printf("Player 1's turn, enter a Rank: ");
         //fgets(c,sizeof(c),stdin);
         scanf("%s", &c);
     }
