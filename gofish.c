@@ -11,11 +11,12 @@ int main(int args, char *argv[]) {
 
     //initialize_player(&user);
     //initialize_player(&computer); 
-    user.player_number = 1;
-    computer.player_number = 2;
+    
 
     while (booleanVal == 1) {
-
+        
+        user.player_number = 1;
+        computer.player_number = 2;
         user.card_list = (struct hand *) malloc(50 * sizeof(struct hand));
         computer.card_list = (struct hand *) malloc(50 * sizeof(struct hand));
 
