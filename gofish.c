@@ -22,6 +22,8 @@ int main(int args, char *argv[]) {
 
         user.book_size = 0;
         computer.book_size = 0;
+	user.hand_size = 0;
+	computer.hand_size = 0;
         shuffle();
         char yesOrNo;
         deal_player_cards(&user);
@@ -32,11 +34,11 @@ int main(int args, char *argv[]) {
             printUsers();
             userTurn(&user);
 
-            if (user.hand_size == 0) {
+            if (user.hand_size == 0 && deck_size() != 0) {
                 struct card nextCard = *(next_card());
                 add_card(&user, &nextCard);
             }
-            if (computer.hand_size == 0) {
+            if (computer.hand_size == 0 && deck_size() != 0) {
                 struct card nextCard = *(next_card());
                 add_card(&computer, &nextCard);
             }
@@ -45,11 +47,11 @@ int main(int args, char *argv[]) {
             computerTurn(&computer);
 
 
-            if (user.hand_size == 0) {
+            if (user.hand_size == 0 && deck_size() != 0) {
                 struct card nextCard = *(next_card());
                 add_card(&user, &nextCard);
             }
-            if (computer.hand_size == 0) {
+            if (computer.hand_size == 0 && deck_size() != 0) {
                 struct card nextCard = *(next_card());
                 add_card(&computer, &nextCard);
             }
@@ -157,7 +159,7 @@ int gofish(struct player *target, char *rankDesire) {
     struct card nextCard = *(next_card());
     add_card(target, &nextCard);
     if (strcmp(nextCard.rank, rankDesire) == 0) {
-        printf("the card they wanted! %s%c. Go again.\n", target->player_number, nextCard.rank,
+        printf("the card they wanted! %s%c. Go again.\n", nextCard.rank,
                nextCard.suit);
         if (target->player_number == computer.player_number)
             computerTurn(target);
